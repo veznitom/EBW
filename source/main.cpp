@@ -2,7 +2,7 @@
 
 int main(int argc, char** argv){
   Lexer lex{true};
-  lex.analyze("Hello world!");
+  lex.analyze("Hello+world!");
   lex.analyze("123");
   lex.analyze("=B5+C6");
   lex.analyze("=sum(B5:C6)");

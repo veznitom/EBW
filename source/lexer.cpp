@@ -8,8 +8,10 @@
 
 struct Token {
   Customs::Type type;
-  int number;
-  std::string text;
+  union {
+    int number;
+    std::string text;
+  };
 
   Token() {
     type = Customs::UNDEF;
@@ -17,6 +19,13 @@ struct Token {
   }
 
   Token(Customs::Type _type) { type = _type; }
+
+  ~Token() {
+    using namespace std;
+    if (type != number) {
+      (&text)->~string();
+    }
+  }
 };
 
 class Lexer {
@@ -77,18 +86,22 @@ public:
     std::vector<Token> tokens = std::vector<Token>();
     Token token;
     for (size_t i = 0; i <= sequence.size(); i++) {
-      if (('a' <= sequence[i] && sequence[i] <= 'z') ||
-          ('A' <= sequence[i] && sequence[i] <= 'Z')) {
-        if (token.type != Customs::TEXT) {
-          match_funct(token);
-          tokens.push_back(token);
-          token.type = Customs::TEXT;
-          token.text = sequence[i];
-        } else
-          token.text.append(1, sequence[i]);
-      }
-
-      else if ('0' <= sequence[i] && sequence[i] <= '9') {
+      if (symbols.find(sequence[i]) != symbols.end()) {
+        match_funct(token);
+        tokens.push_back(token);
+        token.type = Customs::SYMBOL;
+        token.text = sequence[i];
+      } else if (sequence[i] == '(') {
+        match_funct(token);
+        tokens.push_back(token);
+        token.type = Customs::LBRACK;
+        token.text = '(';
+      } else if (sequence[i] == ')') {
+        match_funct(token);
+        tokens.push_back(token);
+        token.type = Customs::RBRACK;
+        token.text = ')';
+      } else if ('0' <= sequence[i] && sequence[i] <= '9') {
         if (token.type == Customs::TEXT) {
           token.text.append(1, sequence[i]);
         } else if (token.type != Customs::NUMBER) {
@@ -98,40 +111,23 @@ public:
           token.number = sequence[i] - '0';
         } else
           token.number = token.number * 10 + (sequence[i] - '0');
-      }
-
-      else if (symbols.find(sequence[i]) != symbols.end()) {
-        match_funct(token);
-        tokens.push_back(token);
-        token.type = Customs::SYMBOL;
-        token.text = sequence[i];
-      }
-
-      else if (sequence[i] == '(') {
-        match_funct(token);
-        tokens.push_back(token);
-        token.type = Customs::LBRACK;
-        token.text = '(';
-      }
-
-      else if (sequence[i] == ')') {
-        match_funct(token);
-        tokens.push_back(token);
-        token.type = Customs::RBRACK;
-        token.text = ')';
-      }
-
-      else if (sequence[i] == '\0') {
+      } else if (' ' <= sequence[i] && sequence[i] <= '~') {
+        if (token.type != Customs::TEXT) {
+          match_funct(token);
+          tokens.push_back(token);
+          token.type = Customs::TEXT;
+          token.text = sequence[i];
+        } else
+          token.text.append(1, sequence[i]);
+      } else if (sequence[i] == '\0') {
         match_funct(token);
         tokens.push_back(token);
         token.type = Customs::END;
         token.text = '\0';
-      }
-
-      else {
+      } else {
         match_funct(token);
         tokens.push_back(token);
-        token.type = Customs::TEXT;
+        token.type = Customs::UNDEF;
         token.text = sequence[i];
       }
     }
