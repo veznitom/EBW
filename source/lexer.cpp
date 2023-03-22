@@ -31,10 +31,8 @@ struct Token {
 class Lexer {
 private:
   bool debug;
-
   std::set<char> symbols = {'+', '-', '*', '/', '%', '=', ':'};
   std::set<std::string> functions = {"sum", "sin", "cos", "avg", "pow"};
-
   void match_funct(Token &token) {
     if (functions.find(token.text) != functions.end())
       token.type = Customs::FUNCTION;

@@ -19,7 +19,7 @@ public:
   };
 
   enum ValueType : int { NUM, STR, RNG, ERR };
-  
+
   struct Value {
     ValueType type;
     union {
@@ -30,21 +30,39 @@ public:
 
     Value() { type = ERR; }
 
-    Value(Value &value){
-      type = value.type;
+    Value(const Value &other) {
+      type = other.type;
       switch (type) {
       case NUM:
-        number = value.number;
-      break;
+        number = other.number;
+        break;
       case STR:
-        text = value.text;
-      break;
+        text = other.text;
+        break;
       case RNG:
-        cells = value.cells;
-      break;
+        cells = other.cells;
+        break;
       case ERR:
         break;
       }
+    }
+
+    Value &operator=(const Value &other) {
+      type = other.type;
+      switch (type) {
+      case NUM:
+        number = other.number;
+        break;
+      case STR:
+        text = other.text;
+        break;
+      case RNG:
+        cells = other.cells;
+        break;
+      case ERR:
+        break;
+      }
+      return *this;
     }
 
     ~Value() {
@@ -58,9 +76,5 @@ public:
     }
   };
 
-  enum EvalState:int{
-    RUNNING,
-    DONE,
-    ERROR
-  };
+  enum EvalState : int { RUNNING, DONE, ERROR };
 };
