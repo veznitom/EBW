@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/ebw.dir/sources/main.cpp.o CMakeFiles/ebw.dir/sources/lexer.cpp.o -o ebw 
