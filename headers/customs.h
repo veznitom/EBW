@@ -10,7 +10,9 @@
 
 namespace Customs {
 
-#define BIGFUCKINGLINE "-----------------------------------------------------------------------------------------------------"
+#define BIGFUCKINGLINE                                                         \
+  "--------------------------------------------------------------------------" \
+  "---------------------------"
 
 enum Type : int { NUMBER, TEXT, FUNCTION, SYMBOL, LBRACK, RBRACK, UNDEF, END };
 enum ValueType : int { NUM, STR, RNG, ERR };
@@ -32,11 +34,19 @@ struct Value {
 struct Token {
   Type type;
   double number{};
+  size_t position{};
   std::string text{};
 
   Token() { type = UNDEF; }
-
   Token(Type tp) { type = tp; }
+  Token(Type tp, double num) {
+    type = tp;
+    number = num;
+  }
+  Token(Type tp, std::string str) {
+    type = tp;
+    text = str;
+  }
 };
 }; // namespace Customs
 

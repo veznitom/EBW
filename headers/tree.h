@@ -23,35 +23,35 @@ public:
   virtual Value get_value();
 };
 
-class Number : AST {
+class Number : public AST {
 public:
   int number;
   Number(int number);
   Value get_value() override;
 };
 
-class Text : AST {
+class Text : public AST {
 public:
   std::string text;
   Text(std::string text);
   Value get_value() override;
 };
 
-class Binary : AST {
+class Binary : public AST {
 public:
   std::unique_ptr<AST> left_child, right_child;
   char symbol;
   Value get_value() override;
 };
 
-class Cell : AST {
+class Cell : public AST {
 public:
   Table *table;
   std::vector<Coordinates> indexes;
   Value get_value() override;
 };
 
-class Function : AST {
+class Function : public AST {
 public:
   std::vector<std::unique_ptr<AST>> children;
   std::string function;
