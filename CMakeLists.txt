@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
 project(ebw2.0 VERSION 0.1)
-add_executable(ebw sources/main.cpp sources/lexer.cpp)
+add_executable(ebw sources/main.cpp sources/lexer.cpp sources/tree.cpp sources/parser.cpp)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)

@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/ebw.dir/sources/main.cpp.o CMakeFiles/ebw.dir/sources/lexer.cpp.o -o ebw 
+/usr/bin/c++ CMakeFiles/ebw.dir/sources/main.cpp.o CMakeFiles/ebw.dir/sources/lexer.cpp.o CMakeFiles/ebw.dir/sources/tree.cpp.o CMakeFiles/ebw.dir/sources/parser.cpp.o -o ebw 

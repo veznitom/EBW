@@ -58,18 +58,21 @@ std::vector<Token> Lexer::analyze(std::string sequence) {
       tokens.push_back(token);
       token.type = SYMBOL;
       token.text = sequence[i];
+      token.number = 0;
       token.position = i;
     } else if (sequence[i] == '(') {
       match_funct(token);
       tokens.push_back(token);
       token.type = LBRACK;
       token.text = '(';
+      token.number = 0;
       token.position = i;
     } else if (sequence[i] == ')') {
       match_funct(token);
       tokens.push_back(token);
       token.type = RBRACK;
       token.text = ')';
+      token.number = 0;
       token.position = i;
     } else if ('0' <= sequence[i] && sequence[i] <= '9') {
       if (token.type == TEXT) {
@@ -78,6 +81,7 @@ std::vector<Token> Lexer::analyze(std::string sequence) {
         match_funct(token);
         tokens.push_back(token);
         token.type = NUMBER;
+        token.text = "";
         token.number = sequence[i] - '0';
         token.position = i;
       } else
@@ -88,6 +92,7 @@ std::vector<Token> Lexer::analyze(std::string sequence) {
         tokens.push_back(token);
         token.type = TEXT;
         token.text = sequence[i];
+        token.number = 0;
         token.position = i;
       } else
         token.text.append(1, sequence[i]);
@@ -96,12 +101,14 @@ std::vector<Token> Lexer::analyze(std::string sequence) {
       tokens.push_back(token);
       token.type = END;
       token.text = '\0';
+      token.number = 0;
       token.position = i;
     } else {
       match_funct(token);
       tokens.push_back(token);
       token.type = UNDEF;
       token.text = sequence[i];
+      token.number = 0;
       token.position = i;
     }
   }

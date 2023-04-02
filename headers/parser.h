@@ -5,28 +5,29 @@
 #include "lexer.h"
 #include "tree.h"
 #include <cstddef>
-#include <typeinfo>
 #include <vector>
 
 using namespace Customs;
 
 class Parser {
   std::vector<Token> tokens;
+  size_t index = 0;
 
   Lexer lexer = Lexer(true);
 
   Token peek();
   Token pop();
-  Token compare(Token token);
+  void compare(Token token);
+  bool ccompare(Token token);
 
-  AST *Value();
-  AST *Expresion();
-  AST *Term();
-  AST *Factor();
-  AST *Function();
-  AST *Cells();
+  std::unique_ptr<AST> Value();
+  std::unique_ptr<AST> Expresion();
+  std::unique_ptr<AST> Term();
+  std::unique_ptr<AST> Factor();
+  std::unique_ptr<AST> Function();
+  std::unique_ptr<AST> Cells();
 
 public:
-  AST *Parse(std::string sequence);
+  std::unique_ptr<AST> Parse(std::string sequence);
 };
 #endif

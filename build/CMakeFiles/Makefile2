@@ -81,12 +81,12 @@ clean: CMakeFiles/ebw.dir/clean
 CMakeFiles/ebw.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ebw.dir/build.make CMakeFiles/ebw.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ebw.dir/build.make CMakeFiles/ebw.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tomasv/Projects/ebw2.0/build/CMakeFiles --progress-num=1,2,3 "Built target ebw"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/tomasv/Projects/ebw2.0/build/CMakeFiles --progress-num=1,2,3,4,5 "Built target ebw"
 .PHONY : CMakeFiles/ebw.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/ebw.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tomasv/Projects/ebw2.0/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tomasv/Projects/ebw2.0/build/CMakeFiles 5
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ebw.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tomasv/Projects/ebw2.0/build/CMakeFiles 0
 .PHONY : CMakeFiles/ebw.dir/rule

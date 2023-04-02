@@ -16,14 +16,14 @@ using namespace Customs;
 class Lexer {
 private:
   bool debug;
-  std::set<char> symbols = {'+', '-', '*', '/', '%', '=', ':'};
+  std::set<char> symbols = {'+', '-', '*', '/', '%', '=', ':','"', ','};
   std::set<std::string> functions = {"sum", "sin", "cos", "avg", "pow"};
   void match_funct(Token &token);
-  void print_tokens(std::vector<Token> &tokens);
 
 public:
   Lexer();
   Lexer(bool debug);
+  void print_tokens(std::vector<Token> &tokens);
   std::vector<Token> analyze(std::string sequence);
 };
 #endif

@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <memory>
 #include <new>
+#include <ostream>
 #include <string>
 #include <utility>
 #include <variant>
@@ -29,6 +30,12 @@ struct Value {
   std::vector<Value> cells{};
 
   Value() { type = ERR; }
+
+  friend std::ostream &operator<<(std::ostream &os, const Value &value) {
+    os << "\n\tType: " << value.type << "\n\tNumber: " << value.number
+       << "\n\tText: " << value.text << "\n";
+    return os;
+  }
 };
 
 struct Token {
@@ -46,6 +53,12 @@ struct Token {
   Token(Type tp, std::string str) {
     type = tp;
     text = str;
+  }
+
+  friend std::ostream &operator<<(std::ostream &os, const Token &value) {
+    os << "\n\tType: " << value.type << "\n\tNumber: " << value.number
+       << "\n\tText: " << value.text << "\n";
+    return os;
   }
 };
 }; // namespace Customs

@@ -177,6 +177,54 @@ sources/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ebw.dir/build.make CMakeFiles/ebw.dir/sources/main.cpp.s
 .PHONY : sources/main.cpp.s
 
+sources/parser.o: sources/parser.cpp.o
+.PHONY : sources/parser.o
+
+# target to build an object file
+sources/parser.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ebw.dir/build.make CMakeFiles/ebw.dir/sources/parser.cpp.o
+.PHONY : sources/parser.cpp.o
+
+sources/parser.i: sources/parser.cpp.i
+.PHONY : sources/parser.i
+
+# target to preprocess a source file
+sources/parser.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ebw.dir/build.make CMakeFiles/ebw.dir/sources/parser.cpp.i
+.PHONY : sources/parser.cpp.i
+
+sources/parser.s: sources/parser.cpp.s
+.PHONY : sources/parser.s
+
+# target to generate assembly for a file
+sources/parser.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ebw.dir/build.make CMakeFiles/ebw.dir/sources/parser.cpp.s
+.PHONY : sources/parser.cpp.s
+
+sources/tree.o: sources/tree.cpp.o
+.PHONY : sources/tree.o
+
+# target to build an object file
+sources/tree.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ebw.dir/build.make CMakeFiles/ebw.dir/sources/tree.cpp.o
+.PHONY : sources/tree.cpp.o
+
+sources/tree.i: sources/tree.cpp.i
+.PHONY : sources/tree.i
+
+# target to preprocess a source file
+sources/tree.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ebw.dir/build.make CMakeFiles/ebw.dir/sources/tree.cpp.i
+.PHONY : sources/tree.cpp.i
+
+sources/tree.s: sources/tree.cpp.s
+.PHONY : sources/tree.s
+
+# target to generate assembly for a file
+sources/tree.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/ebw.dir/build.make CMakeFiles/ebw.dir/sources/tree.cpp.s
+.PHONY : sources/tree.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -192,6 +240,12 @@ help:
 	@echo "... sources/main.o"
 	@echo "... sources/main.i"
 	@echo "... sources/main.s"
+	@echo "... sources/parser.o"
+	@echo "... sources/parser.i"
+	@echo "... sources/parser.s"
+	@echo "... sources/tree.o"
+	@echo "... sources/tree.i"
+	@echo "... sources/tree.s"
 .PHONY : help
 
 

@@ -17,45 +17,53 @@ using namespace Customs;
 
 class AST {
 protected:
-  EvalState state;
+  EvalState state{};
 
 public:
-  virtual Value get_value();
+  virtual Value get_value() = 0;
+  virtual void print() = 0;
 };
 
 class Number : public AST {
 public:
   int number;
   Number(int number);
-  Value get_value() override;
+  virtual Value get_value() override;
+  virtual void print() override;
 };
 
 class Text : public AST {
 public:
   std::string text;
   Text(std::string text);
-  Value get_value() override;
+  Text(std::vector<Token> tokens);
+  virtual Value get_value() override;
+  virtual void print() override;
 };
 
 class Binary : public AST {
 public:
   std::unique_ptr<AST> left_child, right_child;
   char symbol;
-  Value get_value() override;
+  Binary(std::unique_ptr<AST> left, char oper ,std::unique_ptr<AST> right);
+  virtual Value get_value() override;
+  virtual void print() override;
 };
 
-class Cell : public AST {
+/*class Cell : public AST {
 public:
   Table *table;
   std::vector<Coordinates> indexes;
   Value get_value() override;
-};
+  void print() override;
+};*/
 
 class Function : public AST {
 public:
   std::vector<std::unique_ptr<AST>> children;
   std::string function;
-  Value get_value() override;
+  virtual Value get_value() override;
+  virtual void print() override;
 };
 
 #endif

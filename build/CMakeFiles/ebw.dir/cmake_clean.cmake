@@ -3,6 +3,10 @@ file(REMOVE_RECURSE
   "CMakeFiles/ebw.dir/sources/lexer.cpp.o.d"
   "CMakeFiles/ebw.dir/sources/main.cpp.o"
   "CMakeFiles/ebw.dir/sources/main.cpp.o.d"
+  "CMakeFiles/ebw.dir/sources/parser.cpp.o"
+  "CMakeFiles/ebw.dir/sources/parser.cpp.o.d"
+  "CMakeFiles/ebw.dir/sources/tree.cpp.o"
+  "CMakeFiles/ebw.dir/sources/tree.cpp.o.d"
   "ebw"
   "ebw.pdb"
 )

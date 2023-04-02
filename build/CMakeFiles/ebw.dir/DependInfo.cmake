@@ -10,6 +10,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/tomasv/Projects/ebw2.0/sources/lexer.cpp" "CMakeFiles/ebw.dir/sources/lexer.cpp.o" "gcc" "CMakeFiles/ebw.dir/sources/lexer.cpp.o.d"
   "/home/tomasv/Projects/ebw2.0/sources/main.cpp" "CMakeFiles/ebw.dir/sources/main.cpp.o" "gcc" "CMakeFiles/ebw.dir/sources/main.cpp.o.d"
+  "/home/tomasv/Projects/ebw2.0/sources/parser.cpp" "CMakeFiles/ebw.dir/sources/parser.cpp.o" "gcc" "CMakeFiles/ebw.dir/sources/parser.cpp.o.d"
+  "/home/tomasv/Projects/ebw2.0/sources/tree.cpp" "CMakeFiles/ebw.dir/sources/tree.cpp.o" "gcc" "CMakeFiles/ebw.dir/sources/tree.cpp.o.d"
   )
 
 # Targets to which this target links.

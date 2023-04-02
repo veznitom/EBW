@@ -1,5 +1,6 @@
-CMakeFiles/ebw.dir/sources/main.cpp.o: \
- /home/tomasv/Projects/ebw2.0/sources/main.cpp /usr/include/stdc-predef.h \
+CMakeFiles/ebw.dir/sources/parser.cpp.o: \
+ /home/tomasv/Projects/ebw2.0/sources/parser.cpp \
+ /usr/include/stdc-predef.h \
  /home/tomasv/Projects/ebw2.0/sources/../headers/parser.h \
  /home/tomasv/Projects/ebw2.0/sources/../headers/customs.h \
  /usr/include/c++/11/cstddef \
@@ -202,5 +203,4 @@ CMakeFiles/ebw.dir/sources/main.cpp.o: \
  /usr/include/c++/11/tr1/modified_bessel_func.tcc \
  /usr/include/c++/11/tr1/poly_hermite.tcc \
  /usr/include/c++/11/tr1/poly_laguerre.tcc \
- /usr/include/c++/11/tr1/riemann_zeta.tcc \
- /home/tomasv/Projects/ebw2.0/sources/../headers/tree.h
+ /usr/include/c++/11/tr1/riemann_zeta.tcc

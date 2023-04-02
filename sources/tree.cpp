@@ -1,5 +1,8 @@
 #include "../headers/tree.h"
-#include <limits>
+#include <cstddef>
+#include <iostream>
+#include <string>
+#include <utility>
 
 using namespace Customs;
 
@@ -15,9 +18,21 @@ Value Number::get_value() {
   return value;
 }
 
+void Number::print() { std::cout << number << std::endl; }
+
 Text::Text(std::string text) {
   state = DONE;
   this->text = text;
+}
+
+Text::Text(std::vector<Token> tokens) {
+  std::string tmp;
+  for (size_t i = 0; i < tokens.size(); i++) {
+    if (tokens[i].type == NUMBER)
+      tmp.append(std::to_string(tokens[i].number));
+    else
+      tmp.append(tokens[i].text);
+  }
 }
 
 Value Text::get_value() {
@@ -25,6 +40,15 @@ Value Text::get_value() {
   value.type = STR;
   value.text = text;
   return value;
+}
+
+void Text::print() { std::cout << text << std::endl; }
+
+Binary::Binary(std::unique_ptr<AST> left, char oper,
+               std::unique_ptr<AST> right) {
+  left_child = std::move(left);
+  right_child = std::move(right);
+  symbol = oper;
 }
 
 Value Binary::get_value() {
@@ -61,7 +85,13 @@ Value Binary::get_value() {
   return result;
 }
 
-Value Cell::get_value() {
+void Binary::print() {
+  left_child->print();
+  std::cout << symbol << std::endl;
+  right_child->print();
+}
+
+/*Value Cell::get_value() {
   Value result;
   if (indexes.empty())
     result.type = ERR;
@@ -77,13 +107,21 @@ Value Cell::get_value() {
   return result;
 }
 
+void Cell::print() {
+  for (auto &index : indexes)
+    std::cout << index.x << ":" << index.y << std::endl;
+}*/
+
 Value Function::get_value() {
-  Value result;
+  Value result{};
   std::vector<Value> children_vals = std::vector<Value>();
   double PI = 3.1415926535897932384626433;
 
   for (size_t i = 0; i < children.size(); i++)
     children_vals.push_back(children[i]->get_value());
+
+  for (size_t i = 0; i < children_vals.size(); i++)
+    std::cout << children_vals[i] << std::endl;
 
   if (children_vals.empty()) {
     result.type = ERR;
@@ -128,7 +166,7 @@ Value Function::get_value() {
     result.number = sum;
   }
 
-  if (function == "sum") {
+  if (function == "avg") {
     double sum = 0;
     size_t count = 0;
     for (auto &val : children_vals) {
@@ -138,8 +176,14 @@ Value Function::get_value() {
       }
     }
     result.type = NUM;
-    result.number = sum/count;
+    result.number = sum / count;
   }
 
   return result;
+}
+
+void Function::print() {
+  std::cout << function << std::endl;
+  for (auto &child : children)
+    child->print();
 }
