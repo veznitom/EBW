@@ -1,5 +1,5 @@
 #include <string> 
-#include "types.cpp"
+//#include "types.cpp"
 
 class cell{
 private:
