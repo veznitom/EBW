@@ -1,0 +1,633 @@
+    bool InsertControl(const string &input);
+    bool DeleteControl(const string &input);
+    bool Address(const string &addr, Location &loc);
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    bool Expresion(const string &input/*, vector<Location>& link*/);
+    bool Function(const string &input);
+    bool Aggregation(const string &input, const Size &tSize, vector<Location>& link);
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    bool Number(const string &input, float &number);
+    bool Bool(const string &input, bool &state);
+    bool Date(const string &input, int &day, int &month, int &year);
+    //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+
+
+bool Table::InsertControl(const string &input) {
+    Location location;
+    string command, addr, type, value;
+    char i;
+    int temp = 0, index = 0;
+    for (auto &a : input) {
+        if (a == '-')
+            temp++;
+        switch (temp) {
+            case 0:
+                command += a;
+                break;
+            case 1:
+                type += a;
+                break;
+            case 2:
+                addr += a;
+                break;
+            case 3:
+                i = type[1];
+                addr = addr.substr(1, addr.length() - 2);
+                if (command == "insert " && Address(addr, size, location)) {
+                    value = input.substr(index + 1, input.length() - index);
+                    vector<Location> link;
+                    switch (i) {
+                        case 'e':
+                            if (Expresion(value)) {
+                                cells.at(location.y).at(location.x) = new ExpresionCell(location, value);
+                                return true;
+                            }
+                            break;
+                        case 'f':
+                            if (Function(value)) {
+                                cells.at(location.y).at(location.x) = new FunctionCell(location, value);
+                                return true;
+                            }
+                            break;
+                        case 'a':
+                            return true;
+                            break;
+                        case 't':
+                            cells.at(location.y).at(location.x) = new TextCell(location, value);
+                            return true;
+                            break;
+                        case 'n':
+                            float n;
+                            if (Number(value, n)) {
+                                cells.at(location.y).at(location.x) = new NumberCell(location, n);
+                                return true;
+                            }
+                            break;
+                        case 'b':
+                            bool state;
+                            if (Bool(value, state)) {
+                                cells.at(location.y).at(location.x) = new BoolCell(location, state);
+                                return true;
+                            }
+                            break;
+                        case 'd':
+                            int d, m, y;
+                            if (Date(value, d, m, y)) {
+                                cells.at(location.y).at(location.x) = new DateCell(location, d, m, y);
+                                return true;
+                            }
+                            break;
+                        default:
+                            return false;
+                    }
+                }
+                return false;
+            default:
+                break;
+        }
+        index++;
+    }
+    return false;
+}
+
+bool Table::DeleteControl(const string &input) {
+    Location location;
+    string command, address;
+    if (input.length() < 10)
+        return false;
+    command = input.substr(0, 8);
+    if (command == "delete -") {
+        address = input.substr(8, input.length() - 8);
+        if (Address(address, size, location)) {
+            delete cells.at(location.y).at(location.x);
+            cells.at(location.y).at(location.x) = new EmptyCell();
+            return true;
+        }
+    }
+    return false;
+}
+
+
+
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+bool Table::Expresion(const string &input/*, vector<Location> &link, vector<char> signs*/) {
+    Location location;
+    if (input.length() < 3 || input[0] != '=')
+        return false;
+    string addr;
+    for (size_t i = 1; i <= input.length(); i++) {
+        if (input[i] == '+' || input[i] == '-' || input[i] == '*' || input[i] == '/' || i == '\0') {
+            if (Address(addr, size, location)) {
+                if (i == '\0') {
+                    /*link.push_back(location);*/
+                    return true;
+                }
+                /*link.push_back(location);*/
+                addr = "";
+                continue;
+            }
+        }
+        if ((input[i] >= 'A' && input[i] <= 'Z') || (input[i] >= '0' && input[i] <= '9')) {
+            addr += input[i];
+        } else {
+            return false;
+        }
+    }
+    return false;
+}
+
+// SIN, COS, STRLEN, CONCAT, POW, SQRT, ABS, TOSTR, TOINT
+bool Table::Function(const string &input) {
+    Location location;
+    string command, address, number;
+    bool flag = false;
+    if (input.length() < 6 || input[0] != '=')
+        return false;
+    for (int i = 1; i < input.length(); ++i) {
+        if (input[i] == '(') {
+            flag = true;
+            continue;
+        }
+        if (flag)
+            address += input[i];
+        else
+            command += input[i];
+    }
+    address = address.substr(0, address.length() - 1);
+    if ((command == "SIN" || command == "COS" || command == "ABS"/* || command == "SQRT"*/) && Address(address, size, location)) {
+        return cells.at(location.y).at(location.x)->GetType() == Type::number;
+    }
+    /*if (command == "POW") {
+        for (int i = (int) address.length() - 1; i > 0; ++i) {
+            if (address[i] == ',') {
+                address = address.substr(0, address.length() - i);
+                break;
+            }
+            number.insert(number.begin(), address[i]);
+        }
+        if (std::stof(number) >= 0) {
+            if (Address(address, size, location))
+                return true;
+        }
+        return false;
+    }*/
+    if (command == "STRLEN" && Address(address, size, location)) {
+        return cells.at(location.y).at(location.x)->GetType() == Type::text;
+    }
+    if (command == "CONCAT") {
+        Location location1;
+        string cell1, cell2;
+        flag = false;
+        for (char i:address) {
+            if (i == ',')
+                flag = true;
+            if (flag)
+                cell1 += i;
+            else
+                cell2 += i;
+        }
+        if (Address(cell1, size, location) && Address(cell2, size, location1)) {
+            return cells.at(location.y).at(location.x)->GetType() == Type::text && cells.at(location1.x).at(location1.y)->GetType() == Type::text;
+        }
+    }
+        /*if (command == "TOSTR" && Address(address, size, location)) {}
+        if (command == "TOINT" && Address(address, size, location)) {}*/
+    else
+        return false;
+}
+
+// AVG, MAX, MIN, SUM, COUNT
+bool Table::Aggregation(const string &input, const Size &tSize, vector<Location> &link) {
+    return false;
+}
+
+bool Table::Number(const string &input, float &number) {
+    bool decFlag, sing;
+    sing = false;
+    decFlag = false;
+    if (input.length() == 1 && (input[0] == '.' || input[0] == '-'))
+        return false;
+    if (input.length() > 1 && input[0] == '.')
+        decFlag = true;
+    if (input[0] == '-') {
+        sing = true;
+    }
+    for (int j = sing ? 1 : 0; j < input.length(); ++j) {
+        if (input[j] == '.' && !decFlag) {
+            decFlag = true;
+            continue;
+        }
+        if (input[j] < '0' || input[j] > '9')
+            return false;
+    }
+    number = std::stof(input);
+    return true;
+}
+
+bool Table::Bool(const string &input, bool &state) {
+    if (input.length() == 1)
+        if (input[0] == '0' || input[0] == '1') {
+            state = input[0] == '1';
+            return true;
+        }
+    return false;
+}
+
+bool Table::Date(const string &input, int &day, int &month, int &year) {
+    string d, m, y;
+    if (input.length() != 10)
+        return false;
+    if (input[2] == ':' && input[5] == ':') {
+        d = input.substr(0, 2);
+        m = input.substr(3, 2);
+        y = input.substr(6, 4);
+        if (d[0] < '0' || d[0] > '9' || d[1] < '0' || d[1] > '9' || m[0] < '0' || m[0] > '9' || m[1] < '0' || m[1] > '9' ||
+            y[0] < '0' || y[0] > '9' || y[1] < '0' || y[1] > '9' || y[2] < '0' || y[2] > '9' || y[3] < '0' || y[3] > '9')
+            return false;
+        day = (d[0] - '0') * 10 + (d[1] - '0');
+        month = (m[0] - '0') * 10 + (m[1] - '0');
+        year = (y[0] - '0') * 1000 + (y[1] - '0') * 100 + (y[2] - '0') * 10 + (y[3] - '0');
+        if (day > 31 || month > 12)
+            return false;
+        if (day == 31 && (month == 4 || month == 6 || month == 9 || month == 11))
+            return false;
+        if (day == 30 && (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12))
+            return false;
+        return !((day == 31 || day == 30 || day == 29) && month == 2 && !((year % 4 == 0 && year % 100 != 0) || year % 400 == 0));
+    }
+    return false;
+}
+
+
+
+
+
+
+
+ while (true) {
+        int c = wgetch(input),d;
+        getyx(input, y, x);
+        wgetnstr(input, text, 1000);
+        if (x > (getmaxx(input) - 5))
+            wmove(input, 1, 1);
+        if (c == 27)
+            break;
+
+        switch (c) {
+            case KEY_F(1):
+                wgetnstr(input, text, 1000);
+                wclear(input);
+                box(input, 0, 0);
+                wrefresh(input);
+                wmove(input, 1, 1);
+                table.syntaxControl(text);
+                text[0] = '\0';
+                Draw(true);
+                break;
+            case KEY_F(3):
+                d = wgetch(input);
+                switch (d) {
+                    case KEY_LEFT:
+                        index.x--;
+                        if (index.x < 0)
+                            index.x = 0;
+                        Draw(false);
+                        break;
+
+                    case KEY_UP:
+                        index.y--;
+                        if (index.y < 0)
+                            index.y = 0;
+                        Draw(false);
+                        break;
+
+                    case KEY_RIGHT:
+                        index.x++;
+                        if (index.x >= table.GetSize().width)
+                            index.x = table.GetSize().width - 1;
+                        Draw(false);
+                        break;
+
+                    case KEY_DOWN:
+                        index.y++;
+                        if (index.y >= table.GetSize().height)
+                            index.y = table.GetSize().height - 1;
+                        Draw(false);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+
+
+bool Table::syntaxControl(const string &input) {
+    Location location;
+    string command, stype, address, value;
+    char type;
+    int i = 0;
+    // get command then compare to known commands
+    while (input[i] != '-') {
+        command += input[i];
+        i++;
+    }
+    // skiping '-'
+    i++;
+    // removing spaces
+    command.erase(remove(command.begin(), command.end(), ' '), command.end());
+    if (command == "insert") {
+        // get address then check if is address in table
+        while (input[i] != '-') {
+            address += input[i];
+            i++;
+        }
+        address.erase(remove(address.begin(), address.end(), ' '), address.end());
+        if (!Address(address, location))
+            return false;
+        // skiping '-'
+        i++;
+        // get type then get letter and compare it to known types
+        while (input[i] != '-') {
+            stype += input[i];
+            i++;
+        }
+        // skiping '-'
+        i++;
+        stype.erase(remove(stype.begin(), stype.end(), ' '), stype.end());
+        if (stype.length() != 1)
+            return false;
+        type = stype[0];
+        // get rest of the command so cell can parse it and request table for values
+        while (input[i] != '\0') {
+            value += input[i];
+            i++;
+        }
+        value += input[i];
+        switch (type) {
+            case 'e':
+                delete cells.at(location.y).at(location.x);
+                cells.at(location.y).at(location.x) = new ExpresionCell(value, maxCellSize);
+                updaters.push_back(location);
+                DataTransfer(cells.at(location.y).at(location.x));
+                return true;
+            case 'f':
+                delete cells.at(location.y).at(location.x);
+                cells.at(location.y).at(location.x) = new FunctionCell(value, maxCellSize);
+                updaters.push_back(location);
+                DataTransfer(cells.at(location.y).at(location.x));
+                return true;
+            case 'a':
+                delete cells.at(location.y).at(location.x);
+                cells.at(location.y).at(location.x) = new AggregationCell(value, maxCellSize);
+                updaters.push_back(location);
+                DataTransfer(cells.at(location.y).at(location.x));
+                return true;
+            case 't':
+                delete cells.at(location.y).at(location.x);
+                cells.at(location.y).at(location.x) = new TextCell(value, maxCellSize);
+                return true;
+            case 'n':
+                delete cells.at(location.y).at(location.x);
+                cells.at(location.y).at(location.x) = new NumberCell(value, maxCellSize);
+                return true;
+            case 'b':
+                delete cells.at(location.y).at(location.x);
+                cells.at(location.y).at(location.x) = new BoolCell(value, maxCellSize);
+                return true;
+            case 'd':
+                delete cells.at(location.y).at(location.x);
+                cells.at(location.y).at(location.x) = new DateCell(value, maxCellSize);
+                return true;
+            default:
+                return false;
+        }
+    }
+    if (command == "delete") {
+        while (input[i] != '\0') {
+            address += input[i];
+            i++;
+        }
+        if (Address(address, location)) {
+            delete cells.at(location.y).at(location.x);
+            cells.at(location.y).at(location.x) = new EmptyCell();
+            return true;
+        }
+    }
+    if (command == "save") {}
+    if (command == "load") {}
+    return false;
+}
+
+
+
+BaseCell *Table::GetCell(int x, int y) {
+    if (x <= size.width && y <= size.height && x > 0 && y > 0)
+        return cells.at(y).at(x);
+    return nullptr;
+}
+
+bool NumberCell::Update() {
+    /*bool decFlag, sing;
+    sing = false;
+    decFlag = false;
+    if (original.length() == 1 && (original[0] == '.' || original[0] == '-'))
+        return false;
+    if (original.length() > 1 && original[0] == '.')
+        decFlag = true;
+    if (original[0] == '-') {
+        sing = true;
+    }
+    for (int j = sing ? 1 : 0; j < (int) original.length() - 1; ++j) {
+        if (original[j] == '.' && !decFlag) {
+            decFlag = true;
+            continue;
+        }
+        if (original[j] < '0' || original[j] > '9')
+            return false;
+    }
+    number = std::stod(original);
+    std::ostringstream os;
+    os << std::setprecision(3) << number;
+    display = os.str();
+    return true;*/
+}
+
+bool DateCell::Update() {
+    sscanf(original.c_str(), "%d:%d:%d", &day, &month, &year);
+    /*string d, m, y;
+    if (original.length() != 11)
+        return false;
+    if (original[2] == ':' && original[5] == ':') {
+        d = original.substr(0, 2);
+        m = original.substr(3, 2);
+        y = original.substr(6, 4);
+        if (d[0] < '0' || d[0] > '9' || d[1] < '0' || d[1] > '9' || m[0] < '0' || m[0] > '9' || m[1] < '0' || m[1] > '9' ||
+            y[0] < '0' || y[0] > '9' || y[1] < '0' || y[1] > '9' || y[2] < '0' || y[2] > '9' || y[3] < '0' || y[3] > '9')
+            return false;
+        day = (d[0] - '0') * 10 + (d[1] - '0');
+        month = (m[0] - '0') * 10 + (m[1] - '0');
+        year = (y[0] - '0') * 1000 + (y[1] - '0') * 100 + (y[2] - '0') * 10 + (y[3] - '0');*/
+    if (day > 31 || month > 12)
+        return false;
+    if (day == 31 && (month == 4 || month == 6 || month == 9 || month == 11))
+        return false;
+    if (day == 30 && (month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12))
+        return false;
+    if (!((day == 31 || day == 30 || day == 29) && month == 2 && !((year % 4 == 0 && year % 100 != 0) || year % 400 == 0))) {
+        std::ostringstream os;
+        os << std::setw(2) << std::setfill('0') << std::to_string(day) << ":" << std::setw(2) << std::setfill('0') << std::to_string(month) << ":" << std::setw(4) << std::setfill('0') << std::to_string(year);
+        display = os.str();
+        size.width = display.length();
+        size.height = 1;
+        return true;
+    }
+    //}
+    return false;
+}
+
+
+
+
+
+bool Table::Load(const string &fileLocation, Table &table) {
+    Location cellLocation;
+    Size tableSize;
+    string locationS, typeS, inputS, valueS, sizeS, width, height;
+    bool sizeFlag = false, locationFlag = false, typeFlag = false, wFlag = false;
+    std::ifstream ifs(fileLocation, std::ifstream::in);
+    while (ifs.good()) {
+        inputS += (char) ifs.get();
+    }
+    for (auto &i:inputS) {
+        if (i == '\n' || i == '\0' && !sizeFlag && !locationFlag && !typeFlag) {
+            locationFlag = typeFlag = wFlag = false;
+            for (auto &j:locationS) {
+                if (!wFlag) {
+                    if (j == ':') {
+                        wFlag = true;
+                        continue;
+                    }
+                    width += j;
+                } else {
+                    height += j;
+                }
+            }
+            cellLocation.x = (int) std::strtol(width.c_str(), nullptr, 10);
+            cellLocation.y = (int) std::strtol(height.c_str(), nullptr, 10);
+            if (typeS.empty() || cellLocation.x > table.size.width || cellLocation.x < 0 || cellLocation.y > table.size.height || cellLocation.y < 0)
+                return false;
+            valueS.insert(valueS.begin(), '=');
+            switch (typeS[0]) {
+                case '1':
+                    valueS.insert(valueS.begin(), 't');
+                    break;
+                case '2':
+                    valueS.insert(valueS.begin(), 'n');
+                    break;
+                case '3':
+                    valueS.insert(valueS.begin(), 'b');
+                    break;
+                case '4':
+                    valueS.insert(valueS.begin(), 'd');
+                    break;
+                case '5':
+                    valueS.insert(valueS.begin(), 'e');
+                    break;
+                case '6':
+                    valueS.insert(valueS.begin(), 'f');
+                    break;
+                case '7':
+                    valueS.insert(valueS.begin(), 'a');
+                    break;
+                default:
+                    return false;
+            }
+            if (InsertCell(cellLocation, valueS)) {
+                valueS = locationS = typeS = width = height = "";
+                continue;
+            } else {
+                return false;
+            }
+        }
+        if (!sizeFlag) {
+            if (i == '\n') {
+                sizeFlag = true;
+                for (auto &j:sizeS) {
+                    if (!wFlag) {
+                        if (j == ':') {
+                            wFlag = true;
+                            continue;
+                        }
+                        width += j;
+                    } else {
+                        height += j;
+                    }
+                }
+                tableSize.width = (int) std::strtol(width.c_str(), nullptr, 10);
+                tableSize.height = (int) std::strtol(height.c_str(), nullptr, 10);
+                width = height = "";
+                if (tableSize.width != 26 || tableSize.height < 1)
+                    return false;
+                continue;
+            }
+            sizeS += i;
+            continue;
+        }
+        if (!locationFlag) {
+            if (i == ';') {
+                locationFlag = true;
+                continue;
+            }
+            locationS += i;
+            continue;
+        }
+        if (!typeFlag) {
+            if (i == ';') {
+                typeFlag = true;
+                continue;
+            }
+            typeS += i;
+            continue;
+        }
+        valueS += i;
+    }
+    ifs.close();
+    return true;
+}
+
+
+
+/*case KEY_UP:
+                    cell.y--;
+                    if (cell.y < 0) {
+                        cell.y = 0;
+                    }
+                    CellPrint();
+                    break;
+                case KEY_DOWN:
+                    cell.y++;
+                    if (cell.y >= requestSize.height) {
+                        cell.y = requestSize.height - 1;
+                    }
+                    CellPrint();
+                    break;
+                case KEY_LEFT:
+                    cell.x--;
+                    if (cell.x < 0) {
+                        cell.x = 0;
+                    }
+                    CellPrint();
+                    break;
+                case KEY_RIGHT:
+                    cell.x++;
+                    if (cell.x >= requestSize.width) {
+                        cell.x = requestSize.width - 1;
+                    }
+                    CellPrint();
+                    break;*/

@@ -1,0 +1,11 @@
+var searchData=
+[
+  ['datatransfer_154',['DataTransfer',['../classTable.html#a075c02f75253a38f026fff744587229c',1,'Table']]],
+  ['datecell_155',['DateCell',['../classDateCell.html#a4679c2b5487066333b2a3781fe2fa9d9',1,'DateCell']]],
+  ['delete_156',['Delete',['../classInterface.html#a2d3fd927ed31e0462a56c9541f39a843',1,'Interface']]],
+  ['deletecell_157',['DeleteCell',['../classTable.html#affef73745a68d26ba92ccfc1e300df6d',1,'Table']]],
+  ['disectstring_158',['DisectString',['../classTable.html#a0e4dc5ad8bb36cb6e7ff61dceb821d81',1,'Table']]],
+  ['display_159',['Display',['../classBaseCell.html#a33e612f9532ecceeafc4497bd4d717f2',1,'BaseCell::Display()'],['../classEmptyCell.html#a1d3c19352738fda5cc5a60b04ae15779',1,'EmptyCell::Display()'],['../classExpresionCell.html#ae24e1be537be31886fa3fcb4ce5642c4',1,'ExpresionCell::Display()'],['../classFunctionCell.html#ac2f230ecbf7e2015babba1422ba1a4db',1,'FunctionCell::Display()'],['../classAggregationCell.html#a1c1f561e93b9ea979c5661a7f173f7a7',1,'AggregationCell::Display()'],['../classTextCell.html#a994ee8abe467754f37780612c0baad60',1,'TextCell::Display()'],['../classNumberCell.html#ad581d371fb19e6fd68320fe185d7daab',1,'NumberCell::Display()'],['../classBoolCell.html#acf7663a19255a62f880f1ee98d78332f',1,'BoolCell::Display()'],['../classDateCell.html#a4f40d74b5d097bd3aee1c05c3ce796c0',1,'DateCell::Display()']]],
+  ['dissectlink_160',['DissectLink',['../classTable.html#aa9c010414eb6fe3e8bcc4d7ce357d490',1,'Table']]],
+  ['draw_161',['Draw',['../classBaseCell.html#ab369999bd648f5e5ae3c1cd35836fe16',1,'BaseCell::Draw()'],['../classEmptyCell.html#ac971b301c904d5098c7d467d22ccc2d5',1,'EmptyCell::Draw()'],['../classExpresionCell.html#adfa3a47da9f8b2ebc4fb7c0d1384243a',1,'ExpresionCell::Draw()'],['../classFunctionCell.html#ae8e77cec753b5ec1810bd1eaeca4b559',1,'FunctionCell::Draw()'],['../classAggregationCell.html#a95623ef2657038d1ae9b9abf1ac6a42e',1,'AggregationCell::Draw()'],['../classTextCell.html#a6aee81d4d9997948226b6779d87d107d',1,'TextCell::Draw()'],['../classNumberCell.html#acaab8b9b58308e5b5c7fd067d6659b8e',1,'NumberCell::Draw()'],['../classBoolCell.html#aa9cd37b42fe8a7963aeae04da1c288e2',1,'BoolCell::Draw()'],['../classDateCell.html#a27b21a4d6ce0af73e0393b3ada28b041',1,'DateCell::Draw()'],['../classInterface.html#a6afea631dc3ca50194281b02b4e1da06',1,'Interface::Draw()']]]
+];

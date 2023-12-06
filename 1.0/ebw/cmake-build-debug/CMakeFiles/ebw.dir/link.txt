@@ -1,0 +1,1 @@
+/usr/bin/c++  -lncurses -g   CMakeFiles/ebw.dir/main.cpp.o CMakeFiles/ebw.dir/BaseCell.cpp.o CMakeFiles/ebw.dir/helpTypes.cpp.o CMakeFiles/ebw.dir/Table.cpp.o CMakeFiles/ebw.dir/Interface.cpp.o  -o ebw 

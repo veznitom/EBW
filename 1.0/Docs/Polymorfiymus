@@ -1,0 +1,7 @@
+Polymorfizmus
+Pouze třídy typu buňky používají polymorfizmus, protože dle mého názoru rozhraní konzole nebo tabulka uchovávající buňky jej využívat nemusí. Základem všech buněk je BaseCell, která slouží pro vyplnění prázdného místa tabulky a definuje základní metody a proměnné pro všechny buňky.   Každá buňka obsahuje tyto proměnné: velikost realizovanou strukturou Size{widht,height}, adresu  v tabulce, text co se zobrazuje, text vstupu/rovnice, typ buňky a odkazy na buňky které, které požívají tuto buňku, a metody GetSize(), která vrátí strukturu velikosti, GetType(), která vrací typ buňky, Display(), která vrátí text pro výpis, Draw(), která dostane okno z ncurses a vypíše se na svou pozici v tabulce.
+MathCell je rodičem matematicky orientovaných buněk a přidává metodu Evaluate(), která vyhodnocuje vstupní výraz. ExpresionCell, FunctionCell a AggregationCell jsou potomci MathCell, kde popořadě se zabývají vyhodnocením výrazu nad buňkami (např. =A3+B1), matematickými funkcemi (např. =SIN(C9)) a agregačními funkcemi (např. =SUM(A1, B10)).
+ValueCell je rodičem nematematických buněk, to je buněk, kde není potřeba propojování s ostatními buňkami. TextCell, NumberCell (typu float), BoolCell, DateCell(datum je ve formátu dd:mm:yyyy, protože ostatní formáty jsou matoucí) jsou potomci ValueCell. Místo Evaluate() jsou hodnotové buňky vybaveny Update(), která přebere data z validátoru a uloží je.
+Kontrolu správnosti všech formátů buněk a různých typů zajišťuje třída Validator. 
+
+ 

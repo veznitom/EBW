@@ -1,0 +1,22 @@
+Jednoduchý spreadsheet
+Cílem je vytvořit tabulkový editor, který by měl umět pracovat s různými typy dat (čísla, řetězce, Boolean, datum), vyčíslit jednoduché rovnice s operátory +, -, *, / nebo funkcemi typu sin, abs, concat, pracovat s odkazy na ostatní buňky tak, aby nemohlo dojít k zacyklení odkazů, a zvládat agregační funkce typu max, min, avg, count, sum přes řádky, sloupce nebo oblasti. 
+Tabulku je možné uložit do textového souboru, jehož formát je realizován příkazy pro vložení dat. Formát souboru je řešen tak, aby uživatel byl schopen editovat exportovanou tabulku v souborové podobě (na vlastní nebezpečí). Import bude kontrolovat validitu souboru tabulky a jestli nebude bezchybný nenaimportuje ji.
+Aplikace je řešena konzolovým rozhraním pomocí knihovny ncurses. Okno aplikace bude rozdělena na dvě části, tabulku, která zobrazuje veškeré informace o buňkách, a příkazový řádek. Hodnoty na sebe navazujících buněk se budou automaticky aktualizovat při změně hodnot.
+Souřadnice jdou řešené pomocí kartézského součinu A-Z x 1-N, kde N je nějaké celé číslo.
+CELL náleží A-Z x 1-N.
+Ukázka základních funkcí tabulky (pravděpodobně jich bude víc):
+insert	CELL TYPE VALUE 
+-	slouží k vložení dat do tabulky, kde TYPE určuje formát buňky a VALUE hodnotu daného formátu  
+delete	CELL
+-	slouží k odstranění dat z tabulky a vyresetováni formátu buňky
+edit	CELL
+-	slouží k upravení dat v buňce bez změny formátu
+move	UP|DOWN|LAFT|RIGHT
+-	slouží k pohybu tabulkou
+save	FILE
+-	exportuje tabulku do souboru
+load	FILE
+-	importuje tabulku ze souboru
+exit
+-	vypne aplikaci
+ 

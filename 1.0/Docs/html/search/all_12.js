@@ -1,0 +1,5 @@
+var searchData=
+[
+  ['update_114',['Update',['../classBaseCell.html#a37688bd4a7679dc7183d7baee738b19d',1,'BaseCell::Update()'],['../classEmptyCell.html#ae3b4402a3909e7f216b166f2c7acd88c',1,'EmptyCell::Update()'],['../classExpresionCell.html#a8f3774ab99abd2fd847096d76c975c60',1,'ExpresionCell::Update()'],['../classFunctionCell.html#aa5fbd16671f93cfe894327ff5594d65b',1,'FunctionCell::Update()'],['../classAggregationCell.html#ac1eeae8939fedc72cb20f7fbfb2fc6c2',1,'AggregationCell::Update()'],['../classTextCell.html#aa1d8d8fc12857fc2ccc6b6d61d7446ee',1,'TextCell::Update()'],['../classNumberCell.html#abf7a4d1c953d9f2d6c0a97b1211290f8',1,'NumberCell::Update()'],['../classBoolCell.html#a4ac1d6a4b5285aef99e0c8c9cffba747',1,'BoolCell::Update()'],['../classDateCell.html#acd1ed7505399af26e4747b93296beed4',1,'DateCell::Update()'],['../classTable.html#a65e15aa6eee2713822035a6870c07212',1,'Table::Update()']]],
+  ['updaters_115',['updaters',['../classTable.html#a7c45f3ab972f7fd2b339508650fb5733',1,'Table']]]
+];
